@@ -6,6 +6,7 @@ import CardCollection from "@/components/custom/CardCollection";
 import SkeletonCollection from "@/components/custom/SkeletonCollection";
 import ScrollReveal from "@/components/custom/ScrollReveal";
 import { getCollections } from "../api";
+import MaxWidthWrapper from "@/components/custom/MaxWidthWrapper";
 import { SlidersHorizontal, ChevronDown, LayoutGrid, X } from "lucide-react";
 import { parseNftMetadata } from "@/helpers";
 
@@ -79,7 +80,7 @@ export default function CollectionClient() {
 
   return (
     <>
-      <div className="flex max-w-screen-xl mx-auto">
+      <MaxWidthWrapper className="flex">
         <aside className="hidden lg:block w-64 flex-shrink-0 border-r border-divider p-4 space-y-6 min-h-screen">
           <div className="flex items-center gap-2 text-white font-medium">
             <SlidersHorizontal className="w-4 h-4" />
@@ -143,7 +144,7 @@ export default function CollectionClient() {
                 })}
           </div>
         </div>
-      </div>
+      </MaxWidthWrapper>
 
       {filtersOpen && (
         <>

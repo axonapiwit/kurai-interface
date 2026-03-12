@@ -1,4 +1,4 @@
-import moment from "moment";
+import { format, formatDistanceToNow } from "date-fns";
 
 export const formatNumber = (number: number) => {
   return new Intl.NumberFormat().format(number);
@@ -9,11 +9,11 @@ export const formatAddress = (address: string) => {
 };
 
 export const formatDate = (date: string) => {
-  return moment(date).format("Do MMMM YYYY h:mm:ss a");
+  return format(new Date(date), "do MMMM yyyy h:mm:ss a");
 };
 
 export const formatTimeAgo = (date: string) => {
-  return moment(date).fromNow();
+  return formatDistanceToNow(new Date(date), { addSuffix: true });
 };
 
 export const formatNumberNotation = (number: number) => {

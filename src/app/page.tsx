@@ -19,7 +19,7 @@ import Link from "next/link";
 import HeroBanner from "./_sections/HeroBanner";
 import TrendingSection from "./_sections/TrendingSection";
 import StatsSection from "./_sections/StatsSection";
-import { LazyScrollToTop, LazyDonutChart, LazyCountdown, LazyTimeline } from "./_sections/ClientLazy";
+import { LazyScrollToTop, LazyCountdown, LazyTimeline } from "./_sections/ClientLazy";
 
 // ─── Static data ──────────────────────────────────────────────────────────────
 
@@ -154,10 +154,6 @@ function CuratedSection() {
                   className="absolute inset-0"
                   style={{ background: "radial-gradient(ellipse 80% 60% at 70% 20%, rgba(255,255,255,0.08) 0%, transparent 60%)" }}
                 />
-                <div
-                  className="absolute border border-white/[0.06] rounded-full pointer-events-none"
-                  style={{ width: 300, height: 300, top: -120, right: -80 }}
-                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
                   <div className="text-white/50 text-xs mb-1">Featured</div>
@@ -241,9 +237,9 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-w-3xl mx-auto">
             {features.map((feature, i) => (
               <ScrollReveal key={feature.name} className={`stagger-${i + 1} h-full`}>
-                <div className="card-lift h-full bg-card border border-border rounded-xl p-5 sm:p-6 hover:border-primary/40 group flex flex-col">
-                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-4 group-hover:bg-primary/20 transition-colors">
-                    <feature.Icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+                <div className="card-lift h-full bg-card border border-border rounded-xl p-5 sm:p-6 hover:border-primary/40 flex flex-col">
+                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-4">
+                    <feature.Icon className="w-5 h-5" />
                   </div>
                   <h3 className="text-white font-semibold mb-2">{feature.name}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
@@ -293,7 +289,7 @@ export default function Home() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <ScrollReveal className="stagger-1">
               <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 h-full">
                 <h3 className="text-white font-semibold text-sm mb-5">Token Distribution</h3>
@@ -322,13 +318,6 @@ export default function Home() {
             </ScrollReveal>
 
             <ScrollReveal className="stagger-2">
-              <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 h-full">
-                <h3 className="text-white font-semibold text-sm mb-4">Allocation Chart</h3>
-                <LazyDonutChart />
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal className="stagger-3">
               <div
                 className="relative rounded-2xl overflow-hidden p-5 sm:p-6 h-full flex flex-col"
                 style={{ background: "linear-gradient(135deg, #0d1b35 0%, #0f2347 55%, #0a1628 100%)" }}
@@ -377,17 +366,11 @@ export default function Home() {
             {TEAM_MEMBERS.map((member, i) => (
               <ScrollReveal key={member.name} className={`stagger-${i + 1}`}>
                 <div className="group card-lift flex items-center gap-4 sm:gap-5 p-4 sm:p-5 bg-surface border border-divider rounded-2xl hover:border-border transition-colors">
-                  <div className="relative flex-shrink-0">
-                    <div
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold text-xl"
-                      style={{ background: member.gradient }}
-                    >
-                      {member.initial}
-                    </div>
-                    <div
-                      className="absolute inset-0 rounded-2xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"
-                      style={{ background: member.gradient, zIndex: -1 }}
-                    />
+                  <div
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold text-xl flex-shrink-0"
+                    style={{ background: member.gradient }}
+                  >
+                    {member.initial}
                   </div>
 
                   <div className="flex-1 min-w-0">
@@ -436,17 +419,9 @@ export default function Home() {
                   className="bg-surface border border-divider rounded-xl overflow-hidden data-[state=open]:border-primary/30 transition-colors"
                 >
                   <AccordionTrigger className="text-white hover:no-underline px-5 py-4 text-sm font-medium text-left [&>svg]:text-muted-foreground">
-                    <span className="flex items-center gap-3">
-                      <span
-                        className="flex-shrink-0 w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold tabular-nums"
-                        style={{ background: "hsl(var(--primary) / 0.12)", color: "hsl(var(--primary))" }}
-                      >
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      {faq.q}
-                    </span>
+                    {faq.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground text-sm px-5 pb-4 leading-relaxed pl-14">
+                  <AccordionContent className="text-muted-foreground text-sm px-5 pb-4 leading-relaxed">
                     {faq.a}
                   </AccordionContent>
                 </AccordionItem>

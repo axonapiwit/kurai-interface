@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import MaxWidthWrapper from "../components/custom/MaxWidthWrapper";
 import ConnectRoninWalletButton from "../components/ConnectWallet";
-import { Search, Grid3X3, TrendingUp, ChevronDown, Menu, X } from "lucide-react";
+import { Search, Grid3X3, TrendingUp, ChevronDown } from "lucide-react";
 
 const CATEGORIES = ["All", "Gaming", "Art", "PFPs", "More"] as const;
 
@@ -21,7 +21,6 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [activeTab, setActiveTab] = useState<"NFTs" | "Tokens">("NFTs");
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -29,19 +28,9 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen]);
-
   return (
     <header
-      className={`sticky top-0 z-50 backdrop-blur-md navbar-scroll ${
+      className={`sticky top-0 z-40 backdrop-blur-md navbar-scroll ${
         scrolled
           ? "bg-background/98 border-b border-divider"
           : "bg-background/80 border-b border-transparent"
@@ -49,7 +38,7 @@ const Navbar = () => {
     >
       {/* Primary row */}
       <MaxWidthWrapper>
-        <div className="flex h-16 items-center gap-3 sm:gap-4">
+        <div className="flex h-14 lg:h-16 items-center gap-3 sm:gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <div className="w-8 h-8 bg-[#2081e2] rounded-lg flex items-center justify-center">
@@ -58,19 +47,19 @@ const Navbar = () => {
             <span className="text-white font-bold text-base hidden sm:block">Kurai</span>
           </Link>
 
-          {/* Search — compact on mobile */}
+          {/* Search */}
           <div className="flex-1 max-w-2xl">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search..."
-                className="search-glow w-full bg-card border border-border rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-all duration-200 sm:placeholder:content-['Search_items,_collections,_and_accounts']"
+                className="search-glow w-full bg-card border border-border rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-all duration-200"
               />
             </div>
           </div>
 
-          {/* Nav links — desktop */}
+          {/* Nav links — desktop only */}
           <nav className="hidden lg:flex items-center gap-1">
             <Link
               href="/collection"
@@ -88,26 +77,17 @@ const Navbar = () => {
             </Link>
           </nav>
 
-          {/* Wallet — hidden on small mobile */}
-          <div className="hidden sm:flex items-center gap-2 flex-shrink-0 ml-auto">
+          {/* Wallet — desktop only */}
+          <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
             <ConnectRoninWalletButton />
           </div>
-
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl text-muted-foreground hover:text-white hover:bg-card transition-colors flex-shrink-0"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
         </div>
       </MaxWidthWrapper>
 
-      {/* Secondary row — filters (horizontally scrollable on mobile) */}
+      {/* Secondary row — filters */}
       <div className="border-t border-divider/70">
         <MaxWidthWrapper>
-          <div className="flex items-center h-11 gap-3 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center h-10 gap-3 overflow-x-auto scrollbar-hide">
             {/* Category pills */}
             <div className="flex items-center gap-0.5 flex-shrink-0">
               {CATEGORIES.map((cat) => (
@@ -129,7 +109,7 @@ const Navbar = () => {
             {/* Vertical divider */}
             <div className="w-px h-4 bg-secondary flex-shrink-0" />
 
-            {/* Chain / collection icons */}
+            {/* Chain icons */}
             <div className="flex items-center gap-2 flex-1 min-w-0">
               {CHAIN_ICONS.map((icon) => (
                 <button
@@ -163,44 +143,6 @@ const Navbar = () => {
           </div>
         </MaxWidthWrapper>
       </div>
-
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <>
-          <div
-            className="fixed inset-0 top-[7.75rem] bg-black/60 z-40 lg:hidden"
-            onClick={() => setMobileOpen(false)}
-          />
-          <div className="mobile-drawer fixed top-[7.75rem] left-0 right-0 bg-background border-b border-divider z-50 lg:hidden max-h-[calc(100vh-7.75rem)] overflow-y-auto">
-            <div className="p-4 space-y-4">
-              {/* Nav links */}
-              <nav className="space-y-1">
-                <Link
-                  href="/collection"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 text-muted-foreground hover:text-white hover:bg-card px-4 py-3 rounded-xl transition-colors"
-                >
-                  <Grid3X3 className="w-5 h-5" />
-                  <span className="text-sm font-medium">Explore</span>
-                </Link>
-                <Link
-                  href="/"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 text-muted-foreground hover:text-white hover:bg-card px-4 py-3 rounded-xl transition-colors"
-                >
-                  <TrendingUp className="w-5 h-5" />
-                  <span className="text-sm font-medium">Stats</span>
-                </Link>
-              </nav>
-
-              {/* Wallet — mobile only (visible below sm) */}
-              <div className="pt-3 border-t border-divider sm:hidden">
-                <ConnectRoninWalletButton />
-              </div>
-            </div>
-          </div>
-        </>
-      )}
     </header>
   );
 };

@@ -42,7 +42,7 @@ function AddressAvatar({ address }: { address: string }) {
   )
 }
 
-function ConnectRoninWalletButton() {
+function ConnectRoninWalletButton({ compact = false }: { compact?: boolean }) {
   const { open } = useAppKit()
   const { address, isConnected } = useAppKitAccount()
   const { disconnect } = useDisconnect()
@@ -75,7 +75,7 @@ function ConnectRoninWalletButton() {
         className="btn-press flex items-center gap-2 bg-primary hover:bg-primary/80 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-200 hover:shadow-[0_0_16px_hsl(var(--primary)/0.3)]"
       >
         <Wallet className="w-4 h-4" />
-        Connect Wallet
+        {!compact && 'Connect Wallet'}
       </button>
     )
   }
@@ -89,22 +89,28 @@ function ConnectRoninWalletButton() {
       {/* Trigger button */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className={`flex items-center gap-2 bg-card border text-white text-sm px-3 py-2 rounded-xl transition-all duration-200 group ${
+        className={`flex items-center gap-2 bg-card border text-white text-sm rounded-xl transition-all duration-200 ${
+          compact ? 'p-1' : 'px-3 py-2'
+        } ${
           open_
             ? 'border-primary/60 shadow-[0_0_12px_hsl(var(--primary)/0.15)]'
             : 'border-border hover:border-primary/40'
         }`}
       >
         <AddressAvatar address={address} />
-        <div className="flex flex-col items-start leading-none">
-          <span className="text-white text-xs font-medium">{formatAddress(address)}</span>
-          <span className="text-muted-foreground text-[11px] mt-0.5">{balanceStr}</span>
-        </div>
-        <ChevronDown
-          className={`w-3.5 h-3.5 text-muted-foreground transition-transform duration-200 ml-0.5 ${
-            open_ ? 'rotate-180' : ''
-          }`}
-        />
+        {!compact && (
+          <>
+            <div className="flex flex-col items-start leading-none">
+              <span className="text-white text-xs font-medium">{formatAddress(address)}</span>
+              <span className="text-muted-foreground text-[11px] mt-0.5">{balanceStr}</span>
+            </div>
+            <ChevronDown
+              className={`w-3.5 h-3.5 text-muted-foreground transition-transform duration-200 ml-0.5 ${
+                open_ ? 'rotate-180' : ''
+              }`}
+            />
+          </>
+        )}
       </button>
 
       {/* Dropdown panel */}

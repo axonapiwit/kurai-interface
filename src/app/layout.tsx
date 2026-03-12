@@ -3,12 +3,12 @@ import type { Metadata } from "next";
 export const dynamic = 'force-dynamic';
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import { headers } from "next/headers";
 
+import { ContextProvider } from "@/context";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import Navbar from "@/layout/Navbar";
 import Footer from "@/layout/Footer";
-import SessionProvider from "@/providers/SessionProvider";
-import { getSession } from "../../auth";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -22,18 +22,18 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getSession();
+  const cookies = headers().get('cookie');
 
   return (
     <html lang="en">
       <body className={outfit.className}>
-        <SessionProvider session={session}>
+        <ContextProvider cookies={cookies}>
           <ReactQueryProvider>
             <Navbar />
             {children}
             <Footer />
           </ReactQueryProvider>
-        </SessionProvider>
+        </ContextProvider>
       </body>
     </html>
   );

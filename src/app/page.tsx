@@ -120,7 +120,7 @@ const TEAM_MEMBERS = [
   {
     name: "Aont",
     role: "Lead Developer",
-    bio: "Ronin smart contracts & backend",
+    bio: "Frontend Developer",
     initial: "A",
     gradient: "linear-gradient(135deg, #2081e2 0%, #0d47a1 100%)",
   },
@@ -132,8 +132,8 @@ const TEAM_MEMBERS = [
     gradient: "linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%)",
   },
   {
-    name: "Ronin",
-    role: "Community Lead",
+    name: "Roxy",
+    role: "Community Manager",
     bio: "Growth, partnerships & events",
     initial: "R",
     gradient: "linear-gradient(135deg, #059669 0%, #064e3b 100%)",
@@ -166,7 +166,7 @@ const FAQ_ITEMS = [
 // ─── Verified badge ───────────────────────────────────────────────────────────
 function VerifiedBadge() {
   return (
-    <svg className="w-4 h-4 text-[#2081e2] flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+    <svg className="w-4 h-4 text-primary flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
       <path
         fillRule="evenodd"
         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
@@ -188,7 +188,7 @@ function HeroBanner() {
   const slide = FEATURED_SLIDES[current];
 
   return (
-    <section className="border-b border-[#21262d]">
+    <section className="border-b border-divider">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
         <div
           className="relative rounded-2xl overflow-hidden"
@@ -270,7 +270,7 @@ function TrendingSection() {
   const items = data?.result?.slice(0, 10) ?? [];
 
   return (
-    <section className="border-b border-[#21262d]">
+    <section className="border-b border-divider">
       <MaxWidthWrapper className="py-8 sm:py-10">
         <ScrollReveal>
           <div className="flex items-end justify-between mb-5 sm:mb-6">
@@ -279,7 +279,7 @@ function TrendingSection() {
             </div>
             <Link
               href="/collection"
-              className="flex items-center gap-1 text-xs sm:text-sm text-[#2081e2] hover:text-[#4d9fe8] transition-colors"
+              className="flex items-center gap-1 text-xs sm:text-sm text-primary hover:text-primary/80 transition-colors"
             >
               View all <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </Link>
@@ -308,7 +308,7 @@ function CuratedSection() {
   const [featured, ...rest] = CURATED_COLLECTIONS;
 
   return (
-    <section className="border-b border-[#21262d]">
+    <section className="border-b border-divider">
       <MaxWidthWrapper className="py-8 sm:py-10">
         <ScrollReveal>
           <div className="flex items-end justify-between mb-5 sm:mb-6">
@@ -317,7 +317,7 @@ function CuratedSection() {
             </div>
             <Link
               href="/collection"
-              className="flex items-center gap-1 text-xs sm:text-sm text-[#2081e2] hover:text-[#4d9fe8] transition-colors"
+              className="flex items-center gap-1 text-xs sm:text-sm text-primary hover:text-primary/80 transition-colors"
             >
               View all <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </Link>
@@ -425,16 +425,16 @@ function StatItem({ target, label, suffix = "+" }: { target: number; label: stri
         {count.toLocaleString()}
         {suffix}
       </div>
-      <div className="text-[#8a939b] text-sm mt-1.5">{label}</div>
+      <div className="text-muted-foreground text-sm mt-1.5">{label}</div>
     </div>
   );
 }
 
 function StatsSection() {
   return (
-    <section className="border-b border-[#21262d]">
+    <section className="border-b border-divider">
       <div className="max-w-screen-xl mx-auto">
-        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-[#21262d]">
+        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-divider">
           <StatItem target={4200} label="RON Total Volume" />
           <StatItem target={42100} label="NFTs Minted" />
           <StatItem target={8247} label="Active Collectors" />
@@ -448,16 +448,16 @@ function StatsSection() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#1a1c1f]">
+    <main className="min-h-screen bg-background">
       <ScrollToTop
         smooth
-        color="#2081e2"
+        color="hsl(212, 72%, 51%)"
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          background: "#262b2f",
-          border: "1px solid #353840",
+          background: "hsl(204, 8%, 17%)",
+          border: "1px solid hsl(208, 6%, 22%)",
         }}
       />
 
@@ -466,12 +466,12 @@ export default function Home() {
       <CuratedSection />
 
       {/* Features Section */}
-      <section className="border-b border-[#21262d]">
+      <section className="border-b border-divider">
         <MaxWidthWrapper className="py-12 sm:py-16 lg:py-20">
           <ScrollReveal>
             <div className="text-center mb-8 sm:mb-12">
               <h2 className="text-white text-2xl sm:text-3xl font-bold mb-3">Why Kurai?</h2>
-              <p className="text-[#8a939b] max-w-md mx-auto">
+              <p className="text-muted-foreground max-w-md mx-auto">
                 Trade, collect, and grow your digital assets on Ronin.
               </p>
             </div>
@@ -479,12 +479,12 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-w-3xl mx-auto">
             {features.map((feature, i) => (
               <ScrollReveal key={feature.name} className={`stagger-${i + 1} h-full`}>
-                <div className="card-lift h-full bg-[#262b2f] border border-[#353840] rounded-xl p-5 sm:p-6 hover:border-[#2081e2]/40 group flex flex-col">
-                  <div className="w-10 h-10 bg-[#2081e2]/10 rounded-xl flex items-center justify-center text-[#2081e2] mb-4 group-hover:bg-[#2081e2]/20 transition-colors">
+                <div className="card-lift h-full bg-card border border-border rounded-xl p-5 sm:p-6 hover:border-primary/40 group flex flex-col">
+                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-4 group-hover:bg-primary/20 transition-colors">
                     <feature.Icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
                   </div>
                   <h3 className="text-white font-semibold mb-2">{feature.name}</h3>
-                  <p className="text-[#8a939b] text-sm leading-relaxed">{feature.description}</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -493,61 +493,61 @@ export default function Home() {
       </section>
 
       {/* Token Sale Section */}
-      <section className="border-b border-[#21262d]">
+      <section className="border-b border-divider">
         <MaxWidthWrapper className="py-12 sm:py-16 lg:py-20">
           <ScrollReveal>
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
               <div>
-                <div className="inline-flex items-center gap-2 bg-[#2081e2]/10 border border-[#2081e2]/20 text-[#2081e2] text-xs font-medium px-3 py-1.5 rounded-full mb-4">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#2081e2] pulse-dot" />
+                <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary text-xs font-medium px-3 py-1.5 rounded-full mb-4">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary pulse-dot" />
                   Live Sale
                 </div>
                 <h2 className="text-white text-2xl sm:text-3xl font-bold">KuraiToken (KRT)</h2>
-                <p className="text-[#8a939b] text-sm mt-1.5">1 RON = 100 KRT &nbsp;·&nbsp; Soft cap: 500,000 RON</p>
+                <p className="text-muted-foreground text-sm mt-1.5">1 RON = 100 KRT &nbsp;·&nbsp; Soft cap: 500,000 RON</p>
               </div>
-              <button className="btn-press self-start flex-shrink-0 bg-[#2081e2] hover:bg-[#1868b7] text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-colors flex items-center gap-2">
+              <button className="btn-press self-start flex-shrink-0 bg-primary hover:bg-primary/80 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-colors flex items-center gap-2">
                 Buy Tokens <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="bg-[#262b2f] border border-[#353840] rounded-2xl p-5 sm:p-6 mb-4">
+            <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 mb-4">
               <div className="flex items-end justify-between mb-3">
                 <div>
                   <span className="text-white font-bold text-xl sm:text-2xl tabular-nums">342,100</span>
-                  <span className="text-[#8a939b] text-sm ml-2">RON raised</span>
+                  <span className="text-muted-foreground text-sm ml-2">RON raised</span>
                 </div>
-                <span className="text-[#2081e2] font-semibold text-sm tabular-nums">68.4%</span>
+                <span className="text-primary font-semibold text-sm tabular-nums">68.4%</span>
               </div>
-              <div className="h-2.5 bg-[#1a1c1f] rounded-full overflow-hidden">
+              <div className="h-2.5 bg-background rounded-full overflow-hidden">
                 <div
                   className="h-full rounded-full"
-                  style={{ width: "68.4%", background: "linear-gradient(90deg, #1560b0 0%, #2081e2 100%)" }}
+                  style={{ width: "68.4%", background: "linear-gradient(90deg, hsl(212, 78%, 38%) 0%, hsl(var(--primary)) 100%)" }}
                 />
               </div>
               <div className="flex justify-between mt-2">
-                <span className="text-[#8a939b] text-xs">0 RON</span>
-                <span className="text-[#8a939b] text-xs">Goal: 500,000 RON</span>
+                <span className="text-muted-foreground text-xs">0 RON</span>
+                <span className="text-muted-foreground text-xs">Goal: 500,000 RON</span>
               </div>
             </div>
           </ScrollReveal>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <ScrollReveal className="stagger-1">
-              <div className="bg-[#262b2f] border border-[#353840] rounded-2xl p-5 sm:p-6 h-full">
+              <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 h-full">
                 <h3 className="text-white font-semibold text-sm mb-5">Token Distribution</h3>
                 <ul className="space-y-4">
                   {[
-                    { label: "Financial Overhead", pct: 73, color: "#2081e2" },
+                    { label: "Financial Overhead", pct: 73, color: "hsl(var(--primary))" },
                     { label: "Bonus & Fund", pct: 55, color: "#7c3aed" },
                     { label: "IT Infrastructure", pct: 38, color: "#059669" },
                     { label: "Gift Code Inventory", pct: 21, color: "#d97706" },
                   ].map((item) => (
                     <li key={item.label}>
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-[#8a939b] text-xs">{item.label}</span>
+                        <span className="text-muted-foreground text-xs">{item.label}</span>
                         <span className="text-white text-xs font-semibold tabular-nums">{item.pct}%</span>
                       </div>
-                      <div className="h-1.5 bg-[#1a1c1f] rounded-full overflow-hidden">
+                      <div className="h-1.5 bg-background rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full"
                           style={{ width: `${item.pct}%`, background: item.color, opacity: 0.85 }}
@@ -560,7 +560,7 @@ export default function Home() {
             </ScrollReveal>
 
             <ScrollReveal className="stagger-2">
-              <div className="bg-[#262b2f] border border-[#353840] rounded-2xl p-5 sm:p-6 h-full">
+              <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 h-full">
                 <h3 className="text-white font-semibold text-sm mb-4">Allocation Chart</h3>
                 <DonutChart />
               </div>
@@ -577,12 +577,12 @@ export default function Home() {
                 />
                 <div className="relative flex flex-col flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#2081e2] pulse-dot" />
-                    <span className="text-[#2081e2] text-xs font-medium">Ends soon</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary pulse-dot" />
+                    <span className="text-primary text-xs font-medium">Ends soon</span>
                   </div>
                   <h3 className="text-white font-semibold text-sm mb-5">Sale Countdown</h3>
                   <Countdown />
-                  <p className="text-[#4a6080] text-xs mt-5 leading-relaxed">
+                  <p className="text-muted-foreground/60 text-xs mt-5 leading-relaxed">
                     Don&apos;t miss the early-adopter rate. Once the timer hits zero, public sale pricing ends.
                   </p>
                 </div>
@@ -596,25 +596,25 @@ export default function Home() {
       <StatsSection />
 
       {/* Roadmap Section */}
-      <section className="border-b border-[#21262d]">
+      <section className="border-b border-divider">
         <MaxWidthWrapper className="py-12 sm:py-16 lg:py-20 max-w-2xl">
           <Timeline />
         </MaxWidthWrapper>
       </section>
 
       {/* Team Section */}
-      <section className="border-b border-[#21262d]">
+      <section className="border-b border-divider">
         <MaxWidthWrapper className="py-12 sm:py-16 lg:py-20">
           <ScrollReveal>
             <div className="text-center mb-10 sm:mb-12">
               <h2 className="text-white text-2xl sm:text-3xl font-bold mb-2">Our Team</h2>
-              <p className="text-[#8a939b] text-sm">The people building Kurai</p>
+              <p className="text-muted-foreground text-sm">The people building Kurai</p>
             </div>
           </ScrollReveal>
           <div className="max-w-xl mx-auto space-y-3">
             {TEAM_MEMBERS.map((member, i) => (
               <ScrollReveal key={member.name} className={`stagger-${i + 1}`}>
-                <div className="group card-lift flex items-center gap-4 sm:gap-5 p-4 sm:p-5 bg-[#1e2025] border border-[#2a2d34] rounded-2xl hover:border-[#353840] transition-colors">
+                <div className="group card-lift flex items-center gap-4 sm:gap-5 p-4 sm:p-5 bg-surface border border-divider rounded-2xl hover:border-border transition-colors">
                   {/* Avatar with glow */}
                   <div className="relative flex-shrink-0">
                     <div
@@ -635,20 +635,20 @@ export default function Home() {
                       <span className="text-white font-semibold text-sm sm:text-base">{member.name}</span>
                       <span
                         className="text-xs px-2 py-0.5 rounded-md font-medium"
-                        style={{ background: "rgba(32,129,226,0.1)", color: "#2081e2" }}
+                        style={{ background: "hsl(var(--primary) / 0.1)", color: "hsl(var(--primary))" }}
                       >
                         {member.role}
                       </span>
                     </div>
-                    <p className="text-[#5a6070] text-xs leading-relaxed">{member.bio}</p>
+                    <p className="text-muted-foreground text-xs leading-relaxed">{member.bio}</p>
                   </div>
 
                   {/* Social */}
                   <div className="flex items-center gap-1.5 flex-shrink-0">
-                    <button className="w-8 h-8 rounded-lg bg-[#262b2f] border border-[#353840] flex items-center justify-center text-[#8a939b] hover:text-white hover:border-[#4a5060] transition-colors">
+                    <button className="w-8 h-8 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-white hover:border-accent transition-colors">
                       <Twitter className="w-3.5 h-3.5" />
                     </button>
-                    <button className="w-8 h-8 rounded-lg bg-[#262b2f] border border-[#353840] flex items-center justify-center text-[#8a939b] hover:text-white hover:border-[#4a5060] transition-colors">
+                    <button className="w-8 h-8 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-white hover:border-accent transition-colors">
                       <Github className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -660,12 +660,12 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="border-b border-[#21262d]">
+      <section className="border-b border-divider">
         <MaxWidthWrapper className="py-12 sm:py-16 lg:py-20 max-w-2xl">
           <ScrollReveal>
             <div className="text-center mb-10">
               <h2 className="text-white text-2xl sm:text-3xl font-bold mb-2">FAQ</h2>
-              <p className="text-[#8a939b] text-sm">Common questions about Kurai</p>
+              <p className="text-muted-foreground text-sm">Common questions about Kurai</p>
             </div>
           </ScrollReveal>
           <ScrollReveal className="stagger-1">
@@ -674,20 +674,20 @@ export default function Home() {
                 <AccordionItem
                   key={i}
                   value={`item-${i}`}
-                  className="bg-[#1e2025] border border-[#2a2d34] rounded-xl overflow-hidden data-[state=open]:border-[#2081e2]/30 transition-colors"
+                  className="bg-surface border border-divider rounded-xl overflow-hidden data-[state=open]:border-primary/30 transition-colors"
                 >
-                  <AccordionTrigger className="text-white hover:no-underline px-5 py-4 text-sm font-medium text-left [&>svg]:text-[#8a939b]">
+                  <AccordionTrigger className="text-white hover:no-underline px-5 py-4 text-sm font-medium text-left [&>svg]:text-muted-foreground">
                     <span className="flex items-center gap-3">
                       <span
                         className="flex-shrink-0 w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold tabular-nums"
-                        style={{ background: "rgba(32,129,226,0.12)", color: "#2081e2" }}
+                        style={{ background: "hsl(var(--primary) / 0.12)", color: "hsl(var(--primary))" }}
                       >
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       {faq.q}
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="text-[#8a939b] text-sm px-5 pb-4 leading-relaxed pl-14">
+                  <AccordionContent className="text-muted-foreground text-sm px-5 pb-4 leading-relaxed pl-14">
                     {faq.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -698,10 +698,10 @@ export default function Home() {
           {/* CTA */}
           <ScrollReveal className="stagger-2">
             <div className="mt-8 text-center">
-              <p className="text-[#8a939b] text-sm mb-3">Still have questions?</p>
+              <p className="text-muted-foreground text-sm mb-3">Still have questions?</p>
               <a
                 href="#"
-                className="btn-press inline-flex items-center gap-2 bg-[#262b2f] border border-[#353840] hover:border-[#2081e2]/40 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-colors"
+                className="btn-press inline-flex items-center gap-2 bg-card border border-border hover:border-primary/40 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-colors"
               >
                 Join our Discord
                 <ArrowRight className="w-4 h-4" />

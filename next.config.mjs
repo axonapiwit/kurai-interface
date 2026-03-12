@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack(config) {
+    config.externals.push('pino-pretty', 'lokijs', 'encoding');
+
+    // Stub out optional connector peer deps not used in this project
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'porto': false,
+      'porto/internal': false,
+      '@coinbase/wallet-sdk': false,
+      '@metamask/sdk': false,
+    };
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.(".svg")

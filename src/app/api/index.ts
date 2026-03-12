@@ -38,6 +38,73 @@ export async function getUsers() {
   return users;
 }
 
+export async function getWalletNetWorth(address: string) {
+  try {
+    const response = await Moralis.EvmApi.wallets.getWalletNetWorth({
+      address,
+      chains: ["0x1"],
+      excludeNativeBalances: false,
+    });
+    return response.raw;
+  } catch (error) {
+    console.error("Error fetching net worth:", error);
+    return null;
+  }
+}
+
+export async function getWalletTokens(address: string) {
+  try {
+    const balancesRes = await Moralis.EvmApi.token.getWalletTokenBalances({
+      address,
+      chain: "0x1",
+    });
+    const tokens = balancesRes.raw;
+    if (!tokens.length) return { result: [] };
+
+    // Fetch prices for all tokens at once
+    const pricesRes = await Moralis.EvmApi.token.getMultipleTokenPrices(
+      { chain: "0x1" },
+      { tokens: tokens.map((t: any) => ({ tokenAddress: t.token_address })) }
+    );
+    const prices: Record<string, any> = {};
+    for (const p of pricesRes.raw) {
+      if (p.tokenAddress) prices[p.tokenAddress.toLowerCase()] = p;
+    }
+
+    const result = tokens.map((t: any) => {
+      const price = prices[t.token_address?.toLowerCase()] ?? {};
+      const balance = parseFloat(t.balance) / Math.pow(10, t.decimals);
+      const usdPrice = parseFloat(price.usdPrice ?? "0");
+      return {
+        ...t,
+        token_logo: price.tokenLogo ?? null,
+        usd_price: usdPrice,
+        usd_value: (balance * usdPrice).toFixed(2),
+        usd_price_24hr_percent_change: price["24hrPercentChange"] ?? "0",
+      };
+    });
+
+    return { result };
+  } catch (error) {
+    console.error("Error fetching token balances:", error);
+    return null;
+  }
+}
+
+export async function getWalletNFTs(address: string) {
+  try {
+    const response = await Moralis.EvmApi.nft.getWalletNFTs({
+      address,
+      chain: "0x1",
+      mediaItems: true,
+    });
+    return response.raw;
+  } catch (error) {
+    console.error("Error fetching wallet NFTs:", error);
+    return null;
+  }
+}
+
 // export async function getGlobal() {
 //   try {
 //     const response = await fetch("https://coingecko.p.rapidapi.com/global", {

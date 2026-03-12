@@ -458,6 +458,7 @@ export default function Home() {
           alignItems: "center",
           background: "hsl(204, 8%, 17%)",
           border: "1px solid hsl(208, 6%, 22%)",
+          padding: "8px",
         }}
       />
 

@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, memo } from "react";
 import Link from "next/link";
 import MaxWidthWrapper from "../components/custom/MaxWidthWrapper";
 import ConnectRoninWalletButton from "../components/ConnectWallet";
-import { Search, Grid3X3, TrendingUp, ChevronDown, Gamepad2, Palette, Users, LayoutGrid } from "lucide-react";
+import { Search, Grid3X3, TrendingUp, ChevronDown, Gamepad2, Palette, Users, LayoutGrid, BarChart2 } from "lucide-react";
 
 // ── Static data (defined once, never recreated) ──────────────────────────────
 
@@ -57,10 +57,10 @@ const FiltersRow = memo(function FiltersRow({
               <button
                 key={label}
                 onClick={() => onCategory(label)}
-                className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-150 whitespace-nowrap flex-shrink-0 ${
+                className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full transition-colors duration-150 whitespace-nowrap flex-shrink-0 ${
                   activeCategory === label
-                    ? "bg-white text-[#1a1c1f] shadow-sm"
-                    : "text-muted-foreground hover:text-white hover:bg-card"
+                    ? "bg-card text-white border border-border/60"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <Icon className="w-3 h-3 flex-shrink-0" />
@@ -70,9 +70,9 @@ const FiltersRow = memo(function FiltersRow({
           </div>
 
           {/* NFTs / Tokens — sliding pill */}
-          <div className="relative flex items-center bg-secondary/50 border border-border rounded-full p-0.5 flex-shrink-0">
+          <div className="relative flex items-center bg-secondary/30 border border-border/50 rounded-full p-0.5 flex-shrink-0">
             <div
-              className={`absolute top-0.5 bottom-0.5 rounded-full bg-card border border-border/60 shadow transition-all duration-200 ${
+              className={`absolute top-0.5 bottom-0.5 rounded-full bg-card border border-border/40 transition-all duration-200 ${
                 activeTab === "NFTs" ? "left-0.5 right-[calc(50%+1px)]" : "left-[calc(50%+1px)] right-0.5"
               }`}
             />
@@ -103,16 +103,15 @@ const FiltersRow = memo(function FiltersRow({
                 key={label}
                 onClick={() => onChain(active ? null : label)}
                 title={label}
-                className={`flex items-center gap-1.5 flex-shrink-0 transition-all duration-150 rounded-full ${
+                className={`flex items-center gap-1.5 flex-shrink-0 transition-colors duration-150 rounded-full ${
                   active
-                    ? "px-2.5 py-1 text-white text-xs font-medium ring-1 ring-white/20"
-                    : "p-0.5 hover:scale-110"
+                    ? "px-2.5 py-1 text-white text-xs font-medium bg-card border border-border/60"
+                    : "p-0.5 hover:opacity-80"
                 }`}
-                style={active ? activeStyle : undefined}
               >
                 <span
-                  className={`rounded-full flex-shrink-0 transition-all duration-150 ${
-                    active ? "w-3.5 h-3.5" : "w-6 h-6"
+                  className={`rounded-full flex-shrink-0 ${
+                    active ? "w-2.5 h-2.5" : "w-4 h-4 opacity-70"
                   }`}
                   style={dotStyle}
                 />
@@ -166,8 +165,8 @@ const Navbar = () => {
       <MaxWidthWrapper>
         <div className="flex h-14 lg:h-16 items-center gap-3 sm:gap-4">
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-8 h-8 bg-[#2081e2] rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xs">K</span>
+            <div className="w-8 h-8 bg-[#2081e2]/80 rounded-lg flex items-center justify-center">
+              <span className="text-white font-semibold text-xs">K</span>
             </div>
             <span className="text-white font-bold text-base hidden sm:block">Kurai</span>
           </Link>
@@ -197,6 +196,13 @@ const Navbar = () => {
             >
               <TrendingUp className="w-4 h-4" />
               Stats
+            </Link>
+            <Link
+              href="/portfolio"
+              className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-white hover:bg-card px-3 py-2 rounded-xl transition-colors"
+            >
+              <BarChart2 className="w-4 h-4" />
+              Portfolio
             </Link>
           </nav>
 

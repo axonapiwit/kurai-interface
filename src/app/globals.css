@@ -4,48 +4,79 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    /* OpenSea dark theme */
+    --background: 225 8% 11%;
+    --foreground: 210 17% 90%;
+    --card: 204 8% 17%;
+    --card-foreground: 210 17% 90%;
+    --popover: 218 12% 14%;
+    --popover-foreground: 210 17% 90%;
+    --primary: 212 72% 51%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 208 6% 22%;
+    --secondary-foreground: 210 17% 90%;
+    --muted: 208 6% 22%;
+    --muted-foreground: 210 6% 57%;
+    --accent: 208 6% 27%;
+    --accent-foreground: 210 17% 90%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 208 6% 22%;
+    --input: 208 6% 22%;
+    --ring: 212 72% 51%;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --background: 225 8% 11%;
+    --foreground: 210 17% 90%;
+    --card: 204 8% 17%;
+    --card-foreground: 210 17% 90%;
+    --popover: 218 12% 14%;
+    --popover-foreground: 210 17% 90%;
+    --primary: 212 72% 51%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 208 6% 22%;
+    --secondary-foreground: 210 17% 90%;
+    --muted: 208 6% 22%;
+    --muted-foreground: 210 6% 57%;
+    --accent: 208 6% 27%;
+    --accent-foreground: 210 17% 90%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 208 6% 22%;
+    --input: 208 6% 22%;
+    --ring: 212 72% 51%;
   }
 }
 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #1a1c1f;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #353840;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #8a939b;
+  }
+}
+
+/* Override DaisyUI timeline defaults for dark theme */
+.timeline-box {
+  background-color: #262b2f !important;
+  border-color: #353840 !important;
+  color: #e5e8eb !important;
+}

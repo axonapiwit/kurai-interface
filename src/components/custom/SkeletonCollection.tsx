@@ -3,13 +3,17 @@ import { Skeleton } from "../ui/skeleton";
 
 export default function SkeletonCollection() {
   return (
-    <div className="card card-compact w-96 bg-base-100 shadow-xl">
-      <div className="card-body">
-        <Skeleton  className="w-full h-96"/>
-          <Skeleton className="w-1/2 h-6" />
-          <Skeleton className="w-full h-4" />
-        <div className="card-actions justify-end">
-          <Skeleton className="w-20 h-12" />
+    <div className="rounded-xl overflow-hidden bg-[#262b2f] border border-[#353840]">
+      <Skeleton className="w-full aspect-square bg-[#353840]" />
+      <div className="p-3 space-y-2">
+        <Skeleton className="w-24 h-3 bg-[#353840]" />
+        <Skeleton className="w-3/4 h-4 bg-[#353840]" />
+        <div className="flex justify-between items-center pt-1">
+          <div className="space-y-1">
+            <Skeleton className="w-10 h-2 bg-[#353840]" />
+            <Skeleton className="w-16 h-4 bg-[#353840]" />
+          </div>
+          <Skeleton className="w-6 h-6 rounded bg-[#353840]" />
         </div>
       </div>
     </div>

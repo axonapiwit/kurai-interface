@@ -1,32 +1,158 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, memo } from "react";
 import Link from "next/link";
 import MaxWidthWrapper from "../components/custom/MaxWidthWrapper";
 import ConnectRoninWalletButton from "../components/ConnectWallet";
-import { Search, Grid3X3, TrendingUp, ChevronDown } from "lucide-react";
+import { Search, Grid3X3, TrendingUp, ChevronDown, Gamepad2, Palette, Users, LayoutGrid } from "lucide-react";
 
-const CATEGORIES = ["All", "Gaming", "Art", "PFPs", "More"] as const;
+// ── Static data (defined once, never recreated) ──────────────────────────────
 
+const CATEGORIES = [
+  { label: "All",    icon: LayoutGrid },
+  { label: "Gaming", icon: Gamepad2 },
+  { label: "Art",    icon: Palette },
+  { label: "PFPs",   icon: Users },
+  { label: "More",   icon: ChevronDown },
+] as const;
+
+// Precompute gradient strings so render never creates new style objects
 const CHAIN_ICONS = [
-  { label: "ETH", style: { background: "linear-gradient(135deg, #627eea 0%, #4a5ecc 100%)" } },
-  { label: "RON", style: { background: "linear-gradient(135deg, #2081e2 0%, #1565c0 100%)" } },
-  { label: "SOL", style: { background: "linear-gradient(135deg, #9945ff 0%, #14f195 100%)" } },
-  { label: "BNB", style: { background: "linear-gradient(135deg, #f3ba2f 0%, #e0990a 100%)" } },
-  { label: "POL", style: { background: "linear-gradient(135deg, #8247e5 0%, #6033b5 100%)" } },
-  { label: "BASE", style: { background: "linear-gradient(135deg, #0052ff 0%, #003ccc 100%)" } },
-];
+  { label: "ETH",  from: "#627eea", to: "#4a5ecc" },
+  { label: "RON",  from: "#2081e2", to: "#1565c0" },
+  { label: "SOL",  from: "#9945ff", to: "#14f195" },
+  { label: "BNB",  from: "#f3ba2f", to: "#e0990a" },
+  { label: "POL",  from: "#8247e5", to: "#6033b5" },
+  { label: "BASE", from: "#0052ff", to: "#003ccc" },
+].map((c) => ({
+  ...c,
+  dotStyle:    { background: `linear-gradient(135deg, ${c.from} 0%, ${c.to} 100%)` },
+  activeStyle: { background: `linear-gradient(135deg, ${c.from}40 0%, ${c.to}40 100%)` },
+}));
+
+// ── Memoized filters row — never re-renders on scroll ────────────────────────
+
+type FiltersProps = {
+  activeCategory: string;
+  onCategory: (v: string) => void;
+  activeTab: "NFTs" | "Tokens";
+  onTab: (v: "NFTs" | "Tokens") => void;
+  activeChain: string | null;
+  onChain: (v: string | null) => void;
+};
+
+const FiltersRow = memo(function FiltersRow({
+  activeCategory, onCategory,
+  activeTab, onTab,
+  activeChain, onChain,
+}: FiltersProps) {
+  return (
+    <div className="border-t border-divider/70">
+      <MaxWidthWrapper>
+        {/* Row 1: Categories + NFTs/Tokens toggle */}
+        <div className="flex items-center h-10 gap-2">
+          {/* Category pills — scrollable */}
+          <div className="flex items-center gap-1 flex-1 min-w-0 overflow-x-auto scrollbar-hide">
+            {CATEGORIES.map(({ label, icon: Icon }) => (
+              <button
+                key={label}
+                onClick={() => onCategory(label)}
+                className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-150 whitespace-nowrap flex-shrink-0 ${
+                  activeCategory === label
+                    ? "bg-white text-[#1a1c1f] shadow-sm"
+                    : "text-muted-foreground hover:text-white hover:bg-card"
+                }`}
+              >
+                <Icon className="w-3 h-3 flex-shrink-0" />
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {/* NFTs / Tokens — sliding pill */}
+          <div className="relative flex items-center bg-secondary/50 border border-border rounded-full p-0.5 flex-shrink-0">
+            <div
+              className={`absolute top-0.5 bottom-0.5 rounded-full bg-card border border-border/60 shadow transition-all duration-200 ${
+                activeTab === "NFTs" ? "left-0.5 right-[calc(50%+1px)]" : "left-[calc(50%+1px)] right-0.5"
+              }`}
+            />
+            {(["NFTs", "Tokens"] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => onTab(tab)}
+                className={`relative z-10 text-xs font-medium px-3 py-1 rounded-full transition-colors duration-150 ${
+                  activeTab === tab ? "text-white" : "text-muted-foreground hover:text-white"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 2: Chain filters */}
+        <div className="flex items-center h-9 gap-2 border-t border-divider/40 overflow-x-auto scrollbar-hide">
+          <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider flex-shrink-0">
+            Chains
+          </span>
+          <div className="w-px h-3 bg-secondary flex-shrink-0" />
+          {CHAIN_ICONS.map(({ label, dotStyle, activeStyle }) => {
+            const active = activeChain === label;
+            return (
+              <button
+                key={label}
+                onClick={() => onChain(active ? null : label)}
+                title={label}
+                className={`flex items-center gap-1.5 flex-shrink-0 transition-all duration-150 rounded-full ${
+                  active
+                    ? "px-2.5 py-1 text-white text-xs font-medium ring-1 ring-white/20"
+                    : "p-0.5 hover:scale-110"
+                }`}
+                style={active ? activeStyle : undefined}
+              >
+                <span
+                  className={`rounded-full flex-shrink-0 transition-all duration-150 ${
+                    active ? "w-3.5 h-3.5" : "w-6 h-6"
+                  }`}
+                  style={dotStyle}
+                />
+                {active && <span>{label}</span>}
+                {!active && <span className="hidden sm:inline text-xs text-muted-foreground">{label}</span>}
+              </button>
+            );
+          })}
+          <button className="text-muted-foreground hover:text-white transition-colors flex-shrink-0 px-1 text-xs">
+            ···
+          </button>
+        </div>
+      </MaxWidthWrapper>
+    </div>
+  );
+});
+
+// ── Navbar ────────────────────────────────────────────────────────────────────
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled]           = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [activeTab, setActiveTab] = useState<"NFTs" | "Tokens">("NFTs");
+  const [activeTab, setActiveTab]           = useState<"NFTs" | "Tokens">("NFTs");
+  const [activeChain, setActiveChain]       = useState<string | null>(null);
+
+  // Guard: only trigger re-render when the boolean actually flips
+  const handleScroll = useCallback(() => {
+    const next = window.scrollY > 20;
+    setScrolled((prev) => (prev === next ? prev : next));
+  }, []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // Stable callbacks — FiltersRow won't re-render when scrolled changes
+  const handleCategory = useCallback((v: string) => setActiveCategory(v), []);
+  const handleTab      = useCallback((v: "NFTs" | "Tokens") => setActiveTab(v), []);
+  const handleChain    = useCallback((v: string | null) => setActiveChain(v), []);
 
   return (
     <header
@@ -39,7 +165,6 @@ const Navbar = () => {
       {/* Primary row */}
       <MaxWidthWrapper>
         <div className="flex h-14 lg:h-16 items-center gap-3 sm:gap-4">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <div className="w-8 h-8 bg-[#2081e2] rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xs">K</span>
@@ -47,7 +172,6 @@ const Navbar = () => {
             <span className="text-white font-bold text-base hidden sm:block">Kurai</span>
           </Link>
 
-          {/* Search */}
           <div className="flex-1 max-w-2xl">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -59,7 +183,6 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Nav links — desktop only */}
           <nav className="hidden lg:flex items-center gap-1">
             <Link
               href="/collection"
@@ -77,72 +200,18 @@ const Navbar = () => {
             </Link>
           </nav>
 
-          {/* Wallet — desktop only */}
           <div className="hidden lg:flex items-center gap-2 flex-shrink-0 ml-auto">
             <ConnectRoninWalletButton />
           </div>
         </div>
       </MaxWidthWrapper>
 
-      {/* Secondary row — filters */}
-      <div className="border-t border-divider/70">
-        <MaxWidthWrapper>
-          <div className="flex items-center h-10 gap-3 overflow-x-auto scrollbar-hide">
-            {/* Category pills */}
-            <div className="flex items-center gap-0.5 flex-shrink-0">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-150 whitespace-nowrap ${
-                    activeCategory === cat
-                      ? "bg-white text-[#1a1c1f]"
-                      : "text-muted-foreground hover:text-white hover:bg-card"
-                  }`}
-                >
-                  {cat}
-                  {cat === "More" && <ChevronDown className="w-3 h-3" />}
-                </button>
-              ))}
-            </div>
-
-            {/* Vertical divider */}
-            <div className="w-px h-4 bg-secondary flex-shrink-0" />
-
-            {/* Chain icons */}
-            <div className="flex items-center gap-2 flex-1 min-w-0">
-              {CHAIN_ICONS.map((icon) => (
-                <button
-                  key={icon.label}
-                  title={icon.label}
-                  style={icon.style}
-                  className="w-6 h-6 rounded-full flex-shrink-0 hover:ring-2 hover:ring-white/25 transition-all duration-150"
-                />
-              ))}
-              <button className="text-muted-foreground hover:text-white transition-colors flex-shrink-0">
-                <span className="text-sm tracking-widest leading-none">···</span>
-              </button>
-            </div>
-
-            {/* NFTs / Tokens toggle */}
-            <div className="flex items-center bg-card border border-border rounded-lg p-0.5 flex-shrink-0">
-              {(["NFTs", "Tokens"] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`text-xs font-medium px-3 py-1 rounded-md transition-all duration-150 ${
-                    activeTab === tab
-                      ? "bg-secondary text-white"
-                      : "text-muted-foreground hover:text-white"
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-          </div>
-        </MaxWidthWrapper>
-      </div>
+      {/* Filters — memoized, isolated from scroll re-renders */}
+      <FiltersRow
+        activeCategory={activeCategory} onCategory={handleCategory}
+        activeTab={activeTab}           onTab={handleTab}
+        activeChain={activeChain}       onChain={handleChain}
+      />
     </header>
   );
 };

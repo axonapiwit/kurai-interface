@@ -17,9 +17,9 @@ const Navbar = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <div className="w-8 h-8 bg-[#2081e2] rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xs">CR</span>
+              <span className="text-white font-bold text-xs">K</span>
             </div>
-            <span className="text-white font-bold text-base hidden sm:block">CryptoRonin</span>
+            <span className="text-white font-bold text-base hidden sm:block">Kurai</span>
           </Link>
 
           {/* Search */}

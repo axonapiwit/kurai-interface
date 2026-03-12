@@ -39,10 +39,10 @@ export default function Collection() {
         <div className="max-w-screen-xl mx-auto">
           <div className="flex items-end gap-6">
             <div className="w-20 h-20 rounded-2xl bg-[#2081e2] flex items-center justify-center flex-shrink-0">
-              <span className="text-white text-3xl font-bold">CR</span>
+              <span className="text-white text-3xl font-bold">K</span>
             </div>
             <div>
-              <h1 className="text-white text-3xl font-bold">CryptoRonin Collection</h1>
+              <h1 className="text-white text-3xl font-bold">Kurai Collection</h1>
               <p className="text-[#8a939b] mt-1">Unique digital collectibles on the Ronin blockchain</p>
             </div>
           </div>

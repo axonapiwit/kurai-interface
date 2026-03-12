@@ -10,10 +10,10 @@ const Footer = () => {
         <div className='py-10 md:flex md:items-center md:justify-between'>
           <div className='flex items-center gap-2 mb-4 md:mb-0'>
             <div className="w-6 h-6 bg-[#2081e2] rounded-md flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-xs">CR</span>
+              <span className="text-white font-bold text-xs">K</span>
             </div>
             <p className='text-sm text-[#8a939b]'>
-              &copy; CryptoRonin {new Date().getFullYear()} — All Rights Reserved
+              &copy; Kurai {new Date().getFullYear()} — All Rights Reserved
             </p>
           </div>
           <div className='flex items-center gap-6'>

@@ -11,7 +11,7 @@ import { getSession } from "../../auth";
 const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CryptoRonin – NFT Marketplace on Ronin",
+  title: "Kurai – NFT Marketplace on Ronin",
   description: "Discover, collect, and trade NFTs on the Ronin blockchain.",
 };
 

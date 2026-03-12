@@ -10,13 +10,13 @@ export default function CardCollection({
   ipfs: string;
 }>) {
   return (
-    <div className="group relative rounded-xl overflow-hidden bg-[#262b2f] border border-[#353840] hover:border-[#2081e2]/50 transition-all duration-300 hover:shadow-xl hover:shadow-[#2081e2]/10 cursor-pointer">
+    <div className="card-lift group relative rounded-xl overflow-hidden bg-[#262b2f] border border-[#353840] hover:border-[#2081e2]/50 hover:shadow-xl hover:shadow-[#2081e2]/10 cursor-pointer">
       {/* Image */}
       <div className="relative overflow-hidden aspect-square bg-[#1a1c1f]">
-        <IpfsImage hash={ipfs} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        <IpfsImage hash={ipfs} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style={{ transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)' }} />
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-end justify-center pb-4">
-          <button className="bg-[#2081e2] hover:bg-[#1868b7] text-white px-6 py-2.5 rounded-xl text-sm font-medium translate-y-2 group-hover:translate-y-0 transition-transform duration-200">
+          <button className="btn-press bg-[#2081e2] hover:bg-[#1868b7] text-white px-6 py-2.5 rounded-xl text-sm font-medium translate-y-2 group-hover:translate-y-0 transition-transform duration-200">
             Buy Now
           </button>
         </div>
@@ -41,7 +41,7 @@ export default function CardCollection({
               0.05 RON
             </div>
           </div>
-          <button className="text-[#8a939b] hover:text-[#2081e2] transition-colors p-1">
+          <button className="heart-like text-[#8a939b] hover:text-[#e05252] p-1.5 -mr-1 rounded-lg hover:bg-[#e05252]/10 transition-colors duration-200">
             <Heart className="w-4 h-4" />
           </button>
         </div>

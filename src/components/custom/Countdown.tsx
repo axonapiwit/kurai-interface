@@ -38,36 +38,28 @@ const Countdown = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-2 gap-5 text-center auto-cols-max sm:grid-cols-4 md:gap-6">
-      <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-        <span className="countdown font-mono text-4xl sm:text-5xl">
-          <span
-            style={{ "--value": timeLeft.days } as React.CSSProperties}
-          ></span>
+    <div className="grid grid-cols-4 gap-2 sm:gap-5 md:gap-6 text-center">
+      <div className="flex flex-col p-2 bg-secondary rounded-lg text-foreground">
+        <span className="font-mono text-2xl sm:text-4xl md:text-5xl tabular-nums">
+          {String(timeLeft.days).padStart(2, "0")}
         </span>
         days
       </div>
-      <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-        <span className="countdown font-mono text-4xl sm:text-5xl">
-          <span
-            style={{ "--value": timeLeft.hours } as React.CSSProperties}
-          ></span>
+      <div className="flex flex-col p-2 bg-secondary rounded-lg text-foreground">
+        <span className="font-mono text-2xl sm:text-4xl md:text-5xl tabular-nums">
+          {String(timeLeft.hours).padStart(2, "0")}
         </span>
         hours
       </div>
-      <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-        <span className="countdown font-mono text-4xl sm:text-5xl">
-          <span
-            style={{ "--value": timeLeft.minutes } as React.CSSProperties}
-          ></span>
+      <div className="flex flex-col p-2 bg-secondary rounded-lg text-foreground">
+        <span className="font-mono text-2xl sm:text-4xl md:text-5xl tabular-nums">
+          {String(timeLeft.minutes).padStart(2, "0")}
         </span>
         min
       </div>
-      <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-        <span className="countdown font-mono text-4xl sm:text-5xl">
-          <span
-            style={{ "--value": timeLeft.seconds } as React.CSSProperties}
-          ></span>
+      <div className="flex flex-col p-2 bg-secondary rounded-lg text-foreground">
+        <span className="font-mono text-2xl sm:text-4xl md:text-5xl tabular-nums">
+          {String(timeLeft.seconds).padStart(2, "0")}
         </span>
         sec
       </div>

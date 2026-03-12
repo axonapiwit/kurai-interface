@@ -29,6 +29,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getCollections } from "./api";
 import CardCollection from "@/components/custom/CardCollection";
 import SkeletonCollection from "@/components/custom/SkeletonCollection";
+import { parseNftMetadata } from "@/helpers";
 
 // ─── Static data ──────────────────────────────────────────────────────────────
 
@@ -290,10 +291,10 @@ function TrendingSection() {
           {isLoading || !data
             ? Array.from({ length: 10 }).map((_, i) => <SkeletonCollection key={i} />)
             : items.map((item: any, i: number) => {
-                const meta = JSON.parse(item?.metadata ?? "{}");
+                const { name, image } = parseNftMetadata(item?.metadata);
                 return (
                   <ScrollReveal key={item.token_id} className={`stagger-${Math.min(i + 1, 8)}`}>
-                    <CardCollection title={meta.name} ipfs={meta.image} />
+                    <CardCollection title={name} ipfs={image ?? ""} />
                   </ScrollReveal>
                 );
               })}

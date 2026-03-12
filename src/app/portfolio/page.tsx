@@ -6,35 +6,8 @@ import { useAppKitAccount, useAppKit } from "@reown/appkit/react";
 import { Wallet, TrendingUp, TrendingDown, Image, Coins, AlertCircle } from "lucide-react";
 import { getWalletNetWorth, getWalletTokens, getWalletNFTs } from "../api";
 import ScrollReveal from "@/components/custom/ScrollReveal";
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
-function fmt(value: string | number, decimals = 2) {
-  const n = typeof value === "string" ? parseFloat(value) : value;
-  if (isNaN(n)) return "0.00";
-  return n.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-}
-
-function fmtUsd(value: string | number) {
-  const n = typeof value === "string" ? parseFloat(value) : value;
-  if (isNaN(n)) return "$0.00";
-  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
-  if (n >= 1_000) return `$${(n / 1_000).toFixed(2)}K`;
-  return `$${fmt(n)}`;
-}
-
-function fmtBalance(value: string, decimals: number) {
-  const n = parseFloat(value) / Math.pow(10, decimals);
-  if (isNaN(n)) return "0";
-  if (n < 0.0001) return "<0.0001";
-  return n.toLocaleString("en-US", { maximumFractionDigits: 4 });
-}
-
-// ── Skeleton ─────────────────────────────────────────────────────────────────
-
-function Skeleton({ className = "" }: { className?: string }) {
-  return <div className={`animate-pulse bg-secondary/60 rounded-lg ${className}`} />;
-}
+import { Skeleton } from "@/components/ui/skeleton";
+import { fmtUsd, fmtBalance, parseNftMetadata } from "@/helpers";
 
 // ── Net Worth Card ────────────────────────────────────────────────────────────
 
@@ -165,21 +138,9 @@ function TokensTab({ address }: { address: string }) {
 // ── NFT Card ──────────────────────────────────────────────────────────────────
 
 function NftCard({ nft }: { nft: any }) {
-  let name = nft.name ?? `#${nft.token_id}`;
-  let image: string | null = null;
-
-  try {
-    if (nft.metadata) {
-      const meta = typeof nft.metadata === "string" ? JSON.parse(nft.metadata) : nft.metadata;
-      if (meta?.name) name = meta.name;
-      if (meta?.image) image = meta.image.replace("ipfs://", "https://ipfs.io/ipfs/");
-    }
-  } catch {}
-
-  // fallback to media items
-  if (!image && nft.media?.original_media_url) {
-    image = nft.media.original_media_url;
-  }
+  const parsed = parseNftMetadata(nft.metadata);
+  const name = parsed.name ?? nft.name ?? `#${nft.token_id}`;
+  const image = parsed.image ?? nft.media?.original_media_url ?? null;
 
   return (
     <div className="card-lift group relative rounded-xl overflow-hidden bg-card border border-border hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 cursor-pointer">

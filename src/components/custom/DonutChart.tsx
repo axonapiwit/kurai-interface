@@ -5,28 +5,24 @@ import { Doughnut } from 'react-chartjs-2';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const data = {
-  // labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  labels: ['Financial Overhead', 'Bonus & Fund', 'IT Infrastructure', 'Gift Code Inventory'],
   datasets: [
     {
-      data: [12, 19, 3, 5, 2, 3],
-      label: ' # of Votes',
+      data: [73, 55, 38, 21],
+      label: 'Allocation %',
       backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
+        'rgba(32, 129, 226, 0.25)',
+        'rgba(124, 58, 237, 0.25)',
+        'rgba(5, 150, 105, 0.25)',
+        'rgba(217, 119, 6, 0.25)',
       ],
       borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
+        'rgba(32, 129, 226, 1)',
+        'rgba(124, 58, 237, 1)',
+        'rgba(5, 150, 105, 1)',
+        'rgba(217, 119, 6, 1)',
       ],
-      borderWidth: 4,
+      borderWidth: 2,
     },
   ],
 };

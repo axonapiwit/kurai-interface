@@ -1,7 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 
 const FEATURED_SLIDES = [
   {
@@ -49,87 +55,105 @@ function VerifiedBadge() {
 }
 
 export default function HeroBanner() {
+  const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const id = setInterval(() => setCurrent((c) => (c + 1) % FEATURED_SLIDES.length), 5000);
-    return () => clearInterval(id);
-  }, []);
+    if (!api) return;
+    const onSelect = () => setCurrent(api.selectedScrollSnap());
+    api.on("select", onSelect);
+    return () => { api.off("select", onSelect); };
+  }, [api]);
 
-  const slide = FEATURED_SLIDES[current];
+  useEffect(() => {
+    if (!api) return;
+    const id = setInterval(() => api.scrollNext(), 5000);
+    return () => clearInterval(id);
+  }, [api]);
+
+  const scrollPrev = useCallback(() => api?.scrollPrev(), [api]);
+  const scrollNext = useCallback(() => api?.scrollNext(), [api]);
 
   return (
     <section className="border-b border-divider">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-        <div
-          className="relative rounded-2xl overflow-hidden"
+        <Carousel
+          setApi={setApi}
+          opts={{ loop: true }}
+          className="rounded-2xl overflow-hidden"
           style={{ height: "clamp(280px, 42vw, 480px)" }}
         >
-          <div className="absolute inset-0 transition-all duration-700" style={{ background: slide.bg }} />
-          <div className="absolute inset-0 transition-all duration-700" style={{ background: slide.glow1 }} />
-          <div className="absolute inset-0 transition-all duration-700" style={{ background: slide.glow2 }} />
+          <CarouselContent className="ml-0 h-full items-stretch">
+            {FEATURED_SLIDES.map((slide) => (
+              <CarouselItem key={slide.id} className="pl-0 relative h-full">
+                <div className="absolute inset-0 transition-all duration-700" style={{ background: slide.bg }} />
+                <div className="absolute inset-0 transition-all duration-700" style={{ background: slide.glow1 }} />
+                <div className="absolute inset-0 transition-all duration-700" style={{ background: slide.glow2 }} />
 
-          <div
-            className="absolute rounded-full blur-3xl pointer-events-none"
-            style={{ top: "10%", right: "15%", width: 200, height: 200, background: "rgba(255,255,255,0.04)" }}
-          />
-          <div
-            className="absolute border border-white/[0.06] rounded-full pointer-events-none"
-            style={{ width: 340, height: 340, top: -80, right: -80 }}
-          />
+                <div
+                  className="absolute rounded-full blur-3xl pointer-events-none"
+                  style={{ top: "10%", right: "15%", width: 200, height: 200, background: "rgba(255,255,255,0.04)" }}
+                />
+                <div
+                  className="absolute border border-white/[0.06] rounded-full pointer-events-none"
+                  style={{ width: 340, height: 340, top: -80, right: -80 }}
+                />
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none" />
 
-          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7 md:p-8">
-            <div className="text-white/55 text-xs mb-1.5">By {slide.creator}</div>
-            <div className="flex items-center gap-2 mb-4">
-              <h2
-                className="text-white font-bold tracking-tight"
-                style={{ fontSize: "clamp(1.25rem, 3vw, 1.875rem)" }}
-              >
-                {slide.name}
-              </h2>
-              {slide.verified && <VerifiedBadge />}
-            </div>
-            <div className="flex flex-wrap items-center gap-5 sm:gap-8">
-              {[
-                { label: "FLOOR", value: slide.stats.floorPrice },
-                { label: "ITEMS", value: slide.stats.items },
-                { label: "VOLUME", value: slide.stats.totalVolume },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <div className="text-white font-bold text-sm sm:text-base tabular-nums">{stat.value}</div>
-                  <div className="text-white/45 text-xs font-medium tracking-widest mt-0.5">{stat.label}</div>
+                <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7 md:p-8">
+                  <div className="text-white/55 text-xs mb-1.5">By {slide.creator}</div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <h2
+                      className="text-white font-bold tracking-tight"
+                      style={{ fontSize: "clamp(1.25rem, 3vw, 1.875rem)" }}
+                    >
+                      {slide.name}
+                    </h2>
+                    {slide.verified && <VerifiedBadge />}
+                  </div>
+                  <div className="flex flex-wrap items-center gap-5 sm:gap-8">
+                    {[
+                      { label: "FLOOR", value: slide.stats.floorPrice },
+                      { label: "ITEMS", value: slide.stats.items },
+                      { label: "VOLUME", value: slide.stats.totalVolume },
+                    ].map((stat) => (
+                      <div key={stat.label}>
+                        <div className="text-white font-bold text-sm sm:text-base tabular-nums">{stat.value}</div>
+                        <div className="text-white/45 text-xs font-medium tracking-widest mt-0.5">{stat.label}</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
 
           <button
-            onClick={() => setCurrent((c) => (c - 1 + FEATURED_SLIDES.length) % FEATURED_SLIDES.length)}
-            className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-white hover:bg-black/60 hover:border-white/20 hover:scale-105 transition-all duration-200"
+            onClick={scrollPrev}
+            className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-white hover:bg-black/60 hover:border-white/20 hover:scale-105 transition-all duration-200 z-10"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
-            onClick={() => setCurrent((c) => (c + 1) % FEATURED_SLIDES.length)}
-            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-white hover:bg-black/60 hover:border-white/20 hover:scale-105 transition-all duration-200"
+            onClick={scrollNext}
+            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-white hover:bg-black/60 hover:border-white/20 hover:scale-105 transition-all duration-200 z-10"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10">
             {FEATURED_SLIDES.map((_, i) => (
               <button
                 key={i}
-                onClick={() => setCurrent(i)}
+                onClick={() => api?.scrollTo(i)}
                 className={`rounded-full transition-all duration-300 ${
                   i === current ? "w-5 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/35 hover:bg-white/55"
                 }`}
               />
             ))}
           </div>
-        </div>
+        </Carousel>
       </div>
     </section>
   );

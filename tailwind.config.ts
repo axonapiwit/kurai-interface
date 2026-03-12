@@ -54,6 +54,12 @@ const config = {
         },
         surface: "hsl(var(--surface))",
         divider: "hsl(var(--divider))",
+        chart: {
+          "1": "hsl(var(--chart-1))",
+          "2": "hsl(var(--chart-2))",
+          "3": "hsl(var(--chart-3))",
+          "4": "hsl(var(--chart-4))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

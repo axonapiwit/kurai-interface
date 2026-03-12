@@ -67,22 +67,21 @@ export default function Timeline() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-10">
         <div>
-          <h2 className="text-white text-2xl font-bold">Roadmap</h2>
-          <p className="text-[#8a939b] text-sm mt-1">Building the future of Ronin NFTs</p>
+          <h2 className="text-foreground text-2xl font-bold">Roadmap</h2>
+          <p className="text-muted-foreground text-sm mt-1">Building the future of Ronin NFTs</p>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0">
-          <div className="w-28 h-1.5 bg-[#1a1c1f] rounded-full overflow-hidden">
+          <div className="w-28 h-1.5 bg-muted rounded-full overflow-hidden">
             <div
-              className="h-full rounded-full"
+              className="h-full rounded-full bg-primary"
               style={{
                 width: revealed ? `${(doneCount / milestones.length) * 100}%` : "0%",
-                background: "linear-gradient(90deg, #1560b0 0%, #2081e2 100%)",
                 transition: "width 1s cubic-bezier(0.25, 1, 0.5, 1) 200ms",
               }}
             />
           </div>
-          <span className="text-[#8a939b] text-sm whitespace-nowrap">
-            <span className="text-white font-semibold">{doneCount}</span>
+          <span className="text-muted-foreground text-sm whitespace-nowrap">
+            <span className="text-foreground font-semibold">{doneCount}</span>
             <span> / {milestones.length}</span>
           </span>
         </div>
@@ -91,14 +90,13 @@ export default function Timeline() {
       {/* Timeline list */}
       <div className="relative">
         {/* Static background line */}
-        <div className="absolute left-[21px] top-6 bottom-6 w-px bg-[#21262d]" />
+        <div className="absolute left-[21px] top-6 bottom-6 w-px bg-border" />
 
         {/* Animated fill line */}
         <div
-          className="absolute left-[21px] top-6 w-px rounded-full"
+          className="absolute left-[21px] top-6 w-px rounded-full bg-primary"
           style={{
             height: revealed ? `${(doneCount / milestones.length) * 100}%` : "0%",
-            background: "linear-gradient(180deg, #2081e2 0%, #1068c0 100%)",
             transition: "height 1s cubic-bezier(0.25, 1, 0.5, 1) 100ms",
           }}
         />
@@ -120,9 +118,9 @@ export default function Timeline() {
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center border"
                   style={{
-                    background: m.done ? "rgba(32,129,226,0.12)" : "#181b1e",
-                    borderColor: m.done ? "rgba(32,129,226,0.5)" : "#2a2d34",
-                    color: m.done ? "#2081e2" : "#4a5060",
+                    background: m.done ? "hsl(var(--primary) / 0.12)" : "hsl(var(--background))",
+                    borderColor: m.done ? "hsl(var(--primary) / 0.5)" : "hsl(var(--border))",
+                    color: m.done ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
                   }}
                 >
                   {m.done ? (
@@ -143,29 +141,29 @@ export default function Timeline() {
               <div
                 className="flex-1 rounded-xl p-4 border mb-1 transition-colors"
                 style={{
-                  background: m.done ? "#1e2025" : "#181b1e",
-                  borderColor: m.done ? "#2a2d34" : "#21262d",
+                  background: m.done ? "hsl(var(--card))" : "hsl(var(--background))",
+                  borderColor: "hsl(var(--border))",
                   opacity: m.done ? 1 : 0.65,
                 }}
               >
                 <div className="flex items-center justify-between mb-1.5">
                   <h3
                     className="font-semibold text-sm"
-                    style={{ color: m.done ? "#fff" : "#8a939b" }}
+                    style={{ color: m.done ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))" }}
                   >
                     {m.title}
                   </h3>
                   <span
                     className="text-xs px-2 py-0.5 rounded-lg font-medium flex-shrink-0"
                     style={{
-                      background: m.done ? "rgba(32,129,226,0.1)" : "#262b2f",
-                      color: m.done ? "#2081e2" : "#5a6070",
+                      background: m.done ? "hsl(var(--primary) / 0.1)" : "hsl(var(--secondary))",
+                      color: m.done ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
                     }}
                   >
                     {m.tag}
                   </span>
                 </div>
-                <p className="text-[#5a6570] text-xs leading-relaxed">{m.description}</p>
+                <p className="text-muted-foreground text-xs leading-relaxed">{m.description}</p>
               </div>
             </div>
           ))}

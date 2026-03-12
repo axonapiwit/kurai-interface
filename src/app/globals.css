@@ -110,6 +110,106 @@
               0 0 0 1px hsl(var(--primary) / 0.06);
 }
 
+/* ── Anime card effects ── */
+
+/* Wrapper — clips aura to card bounds, 1px padding reveals gradient as border */
+.card-anime {
+  position: relative;
+  padding: 1px;
+  overflow: hidden;
+  transition: box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.card-anime:hover {
+  box-shadow:
+    0 0 20px hsl(var(--primary) / 0.35),
+    0 0 40px hsl(var(--primary) / 0.15);
+}
+
+/* 1. Rotating energy-aura border (Dragon Ball power-up) */
+.anime-aura {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg,
+    hsl(var(--primary)),
+    hsl(var(--chart-2)),
+    hsl(var(--primary) / 0.2),
+    hsl(var(--chart-3)),
+    hsl(var(--primary))
+  );
+  animation: aura-spin 3s linear infinite paused;
+}
+.group:hover .anime-aura {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@keyframes aura-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 2. CRT scanlines over image (Ghost in the Shell) */
+.anime-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.12) 3px,
+    rgba(0, 0, 0, 0.12) 4px
+  );
+  mix-blend-mode: multiply;
+}
+.group:hover .anime-scanlines {
+  opacity: 1;
+}
+
+/* 3. Diagonal speed-line sweep (anime action frame) */
+.anime-speed-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+}
+.anime-speed-lines::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 300%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    -55deg,
+    transparent 0px,
+    transparent 10px,
+    rgba(255, 255, 255, 0.06) 10px,
+    rgba(255, 255, 255, 0.06) 12px,
+    transparent 12px,
+    transparent 22px,
+    rgba(255, 255, 255, 0.03) 22px,
+    rgba(255, 255, 255, 0.03) 23px
+  );
+  transform: translateX(0);
+}
+.group:hover .anime-speed-lines {
+  opacity: 1;
+}
+.group:hover .anime-speed-lines::before {
+  animation: speed-sweep 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Button press effect */
 .btn-press {
   transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1);
@@ -166,6 +266,11 @@
   50% {
     opacity: 0.5;
   }
+}
+
+@keyframes speed-sweep {
+  from { transform: translateX(-40%); }
+  to   { transform: translateX(60%); }
 }
 
 @keyframes dropdown-slide {
@@ -264,6 +369,13 @@
   }
   .card-lift:hover {
     transform: none;
+  }
+  .anime-aura {
+    display: none;
+  }
+  .anime-scanlines,
+  .anime-speed-lines {
+    display: none;
   }
   .btn-press:active {
     transform: none;

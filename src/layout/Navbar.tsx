@@ -191,7 +191,7 @@ const Navbar = () => {
               Explore
             </Link>
             <Link
-              href="/"
+              href="/stats"
               className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-white hover:bg-card px-3 py-2 rounded-xl transition-colors"
             >
               <TrendingUp className="w-4 h-4" />

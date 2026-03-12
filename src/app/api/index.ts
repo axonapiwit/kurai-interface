@@ -43,7 +43,6 @@ export async function getWalletNetWorth(address: string) {
     const response = await Moralis.EvmApi.wallets.getWalletNetWorth({
       address,
       chains: ["0x1"],
-      excludeNativeBalances: false,
     });
     return response.raw;
   } catch (error) {
@@ -87,6 +86,47 @@ export async function getWalletTokens(address: string) {
     return { result };
   } catch (error) {
     console.error("Error fetching token balances:", error);
+    return null;
+  }
+}
+
+export async function getCollectionStats() {
+  try {
+    const response = await Moralis.EvmApi.nft.getNFTCollectionStats({
+      chain: "0x1",
+      address: contractAddress,
+    });
+    return response.raw;
+  } catch (error) {
+    console.error("Error fetching collection stats:", error);
+    return null;
+  }
+}
+
+export async function getNFTTrades(limit = 20) {
+  try {
+    const response = await Moralis.EvmApi.nft.getNFTTrades({
+      chain: "0x1",
+      address: contractAddress,
+      limit,
+    });
+    return response.raw;
+  } catch (error) {
+    console.error("Error fetching NFT trades:", error);
+    return null;
+  }
+}
+
+export async function getEthPrice() {
+  try {
+    const WETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
+    const response = await Moralis.EvmApi.token.getTokenPrice({
+      chain: "0x1",
+      address: WETH,
+    });
+    return response.raw;
+  } catch (error) {
+    console.error("Error fetching ETH price:", error);
     return null;
   }
 }

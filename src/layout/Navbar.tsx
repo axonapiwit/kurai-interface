@@ -89,7 +89,7 @@ const Navbar = () => {
           </nav>
 
           {/* Wallet — hidden on small mobile */}
-          <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
+          <div className="hidden sm:flex items-center gap-2 flex-shrink-0 ml-auto">
             <ConnectRoninWalletButton />
           </div>
 

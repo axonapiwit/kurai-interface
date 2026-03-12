@@ -6,7 +6,6 @@ import "./globals.css";
 import { headers } from "next/headers";
 
 import { ContextProvider } from "@/context";
-import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import Navbar from "@/layout/Navbar";
 import Footer from "@/layout/Footer";
 
@@ -22,17 +21,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookies = headers().get('cookie');
+  const cookies = (await headers()).get('cookie');
 
   return (
     <html lang="en">
       <body className={outfit.className}>
         <ContextProvider cookies={cookies}>
-          <ReactQueryProvider>
-            <Navbar />
-            {children}
-            <Footer />
-          </ReactQueryProvider>
+          <Navbar />
+          {children}
+          <Footer />
         </ContextProvider>
       </body>
     </html>

@@ -25,7 +25,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Link from "next/link";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getCollections } from "./api";
 import CardCollection from "@/components/custom/CardCollection";
 import SkeletonCollection from "@/components/custom/SkeletonCollection";
@@ -266,7 +266,7 @@ function HeroBanner() {
 
 // ─── Trending Collections ─────────────────────────────────────────────────────
 function TrendingSection() {
-  const { data, isLoading } = useQuery("collections", getCollections, { staleTime: 60000 });
+  const { data, isLoading } = useQuery({ queryKey: ["collections"], queryFn: getCollections, staleTime: 60000 });
   const items = data?.result?.slice(0, 10) ?? [];
 
   return (

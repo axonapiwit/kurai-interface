@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 interface IpfsImageProps {
   hash: string
   alt?: string
@@ -5,7 +7,7 @@ interface IpfsImageProps {
   style?: React.CSSProperties
 }
 
-const GATEWAY = "https://cloudflare-ipfs.com/ipfs/"
+const GATEWAY = "https://ipfs.io/ipfs/"
 
 export function IpfsImage({ hash, alt = "", className, style }: IpfsImageProps) {
   const src = hash.startsWith("ipfs://")
@@ -14,5 +16,14 @@ export function IpfsImage({ hash, alt = "", className, style }: IpfsImageProps) 
     ? `${GATEWAY}${hash}`
     : hash
 
-  return <img src={src} alt={alt} className={className} style={style} />
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className={className}
+      style={style}
+      unoptimized={src.startsWith("https://ipfs.io")}
+    />
+  )
 }

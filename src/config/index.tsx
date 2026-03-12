@@ -1,5 +1,6 @@
 import { cookieStorage, createStorage } from '@wagmi/core'
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
+import type { AppKitNetwork } from '@reown/appkit/networks'
 import { defineChain } from 'viem'
 
 export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
@@ -20,7 +21,7 @@ export const ronin = defineChain({
   },
 })
 
-export const networks = [ronin] as const
+export const networks = [ronin] as [AppKitNetwork, ...AppKitNetwork[]]
 
 export const wagmiAdapter = new WagmiAdapter({
   storage: createStorage({ storage: cookieStorage }),

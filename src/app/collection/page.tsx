@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import CardCollection from "@/components/custom/CardCollection";
 import SkeletonCollection from "@/components/custom/SkeletonCollection";
 import ScrollReveal from "@/components/custom/ScrollReveal";
@@ -81,9 +81,7 @@ function FilterPanel() {
 }
 
 export default function Collection() {
-  const { data, isLoading } = useQuery("collections", getCollections, {
-    staleTime: 3000,
-  });
+  const { data, isLoading } = useQuery({ queryKey: ["collections"], queryFn: getCollections, staleTime: 3000 });
   const [sortOpen, setSortOpen] = useState(false);
   const [sortBy, setSortBy] = useState("Recently listed");
   const [filtersOpen, setFiltersOpen] = useState(false);

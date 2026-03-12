@@ -15,7 +15,7 @@ import {
 
 const useTimer = () => {
   const timerRef = useRef(0);
-  const intervalRef = useRef<any>();
+  const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
   const [day, setDay] = useState(0);
   const [hour, setHour] = useState(0);

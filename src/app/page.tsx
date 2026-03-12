@@ -1,23 +1,14 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import {
   Leaf,
   Shield,
   Zap,
   TrendingUp,
   ArrowRight,
-  ChevronLeft,
-  ChevronRight,
   Twitter,
   Github,
 } from "lucide-react";
 import MaxWidthWrapper from "@/components/custom/MaxWidthWrapper";
 import ScrollReveal from "@/components/custom/ScrollReveal";
-import ScrollToTop from "react-scroll-to-top";
-import DonutChart from "@/components/custom/DonutChart";
-import Countdown from "@/components/custom/Countdown";
-import Timeline from "@/components/custom/Timeline";
 import {
   Accordion,
   AccordionContent,
@@ -25,11 +16,10 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
-import { getCollections } from "./api";
-import CardCollection from "@/components/custom/CardCollection";
-import SkeletonCollection from "@/components/custom/SkeletonCollection";
-import { parseNftMetadata } from "@/helpers";
+import HeroBanner from "./_sections/HeroBanner";
+import TrendingSection from "./_sections/TrendingSection";
+import StatsSection from "./_sections/StatsSection";
+import { LazyScrollToTop, LazyDonutChart, LazyCountdown, LazyTimeline } from "./_sections/ClientLazy";
 
 // ─── Static data ──────────────────────────────────────────────────────────────
 
@@ -57,39 +47,6 @@ const features = [
     Icon: TrendingUp,
     description:
       "Ronin's minimal gas fees mean you keep more of your earnings on every trade and mint.",
-  },
-];
-
-const FEATURED_SLIDES = [
-  {
-    id: 0,
-    name: "Kurai",
-    creator: "KuraiDeployer",
-    verified: true,
-    stats: { floorPrice: "0.05 RON", items: "8,200", totalVolume: "12.4K RON" },
-    bg: "linear-gradient(135deg, #0f0c29 0%, #302b63 55%, #1e1b4b 100%)",
-    glow1: "radial-gradient(ellipse 70% 60% at 75% 30%, rgba(139,92,246,0.35) 0%, transparent 70%)",
-    glow2: "radial-gradient(ellipse 50% 40% at 28% 70%, rgba(59,130,246,0.2) 0%, transparent 60%)",
-  },
-  {
-    id: 1,
-    name: "Ronin Warriors",
-    creator: "WarriorStudios",
-    verified: true,
-    stats: { floorPrice: "0.12 RON", items: "3,333", totalVolume: "8.7K RON" },
-    bg: "linear-gradient(135deg, #1c0500 0%, #431200 55%, #2d0800 100%)",
-    glow1: "radial-gradient(ellipse 70% 60% at 75% 30%, rgba(234,88,12,0.35) 0%, transparent 70%)",
-    glow2: "radial-gradient(ellipse 50% 40% at 25% 65%, rgba(239,68,68,0.2) 0%, transparent 60%)",
-  },
-  {
-    id: 2,
-    name: "Pixel Realm",
-    creator: "PixelForge",
-    verified: false,
-    stats: { floorPrice: "0.02 RON", items: "10,000", totalVolume: "4.2K RON" },
-    bg: "linear-gradient(135deg, #001a0f 0%, #003d28 55%, #001f18 100%)",
-    glow1: "radial-gradient(ellipse 70% 60% at 75% 30%, rgba(16,185,129,0.3) 0%, transparent 70%)",
-    glow2: "radial-gradient(ellipse 50% 40% at 30% 65%, rgba(6,182,212,0.18) 0%, transparent 60%)",
   },
 ];
 
@@ -164,147 +121,7 @@ const FAQ_ITEMS = [
   },
 ];
 
-// ─── Verified badge ───────────────────────────────────────────────────────────
-function VerifiedBadge() {
-  return (
-    <svg className="w-4 h-4 text-primary flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-      <path
-        fillRule="evenodd"
-        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-// ─── Hero Banner ──────────────────────────────────────────────────────────────
-function HeroBanner() {
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => setCurrent((c) => (c + 1) % FEATURED_SLIDES.length), 5000);
-    return () => clearInterval(id);
-  }, []);
-
-  const slide = FEATURED_SLIDES[current];
-
-  return (
-    <section className="border-b border-divider">
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-        <div
-          className="relative rounded-2xl overflow-hidden"
-          style={{ height: "clamp(280px, 42vw, 480px)" }}
-        >
-          <div className="absolute inset-0 transition-all duration-700" style={{ background: slide.bg }} />
-          <div className="absolute inset-0 transition-all duration-700" style={{ background: slide.glow1 }} />
-          <div className="absolute inset-0 transition-all duration-700" style={{ background: slide.glow2 }} />
-
-          <div
-            className="absolute rounded-full blur-3xl pointer-events-none"
-            style={{ top: "10%", right: "15%", width: 200, height: 200, background: "rgba(255,255,255,0.04)" }}
-          />
-          <div
-            className="absolute border border-white/[0.06] rounded-full pointer-events-none"
-            style={{ width: 340, height: 340, top: -80, right: -80 }}
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent pointer-events-none" />
-
-          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7 md:p-8">
-            <div className="text-white/55 text-xs mb-1.5">By {slide.creator}</div>
-            <div className="flex items-center gap-2 mb-4">
-              <h2
-                className="text-white font-bold tracking-tight"
-                style={{ fontSize: "clamp(1.25rem, 3vw, 1.875rem)" }}
-              >
-                {slide.name}
-              </h2>
-              {slide.verified && <VerifiedBadge />}
-            </div>
-            <div className="flex flex-wrap items-center gap-5 sm:gap-8">
-              {[
-                { label: "FLOOR", value: slide.stats.floorPrice },
-                { label: "ITEMS", value: slide.stats.items },
-                { label: "VOLUME", value: slide.stats.totalVolume },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <div className="text-white font-bold text-sm sm:text-base tabular-nums">{stat.value}</div>
-                  <div className="text-white/45 text-xs font-medium tracking-widest mt-0.5">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <button
-            onClick={() => setCurrent((c) => (c - 1 + FEATURED_SLIDES.length) % FEATURED_SLIDES.length)}
-            className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-white hover:bg-black/60 hover:border-white/20 hover:scale-105 transition-all duration-200"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => setCurrent((c) => (c + 1) % FEATURED_SLIDES.length)}
-            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-9 sm:h-9 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-white hover:bg-black/60 hover:border-white/20 hover:scale-105 transition-all duration-200"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-            {FEATURED_SLIDES.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrent(i)}
-                className={`rounded-full transition-all duration-300 ${
-                  i === current ? "w-5 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/35 hover:bg-white/55"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Trending Collections ─────────────────────────────────────────────────────
-function TrendingSection() {
-  const { data, isLoading } = useQuery({ queryKey: ["collections"], queryFn: getCollections, staleTime: 60000 });
-  const items = data?.result?.slice(0, 10) ?? [];
-
-  return (
-    <section className="border-b border-divider">
-      <MaxWidthWrapper className="py-8 sm:py-10">
-        <ScrollReveal>
-          <div className="flex items-end justify-between mb-5 sm:mb-6">
-            <div>
-              <h2 className="text-white text-lg sm:text-xl font-bold">Trending</h2>
-            </div>
-            <Link
-              href="/collection"
-              className="flex items-center gap-1 text-xs sm:text-sm text-primary hover:text-primary/80 transition-colors"
-            >
-              View all <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-            </Link>
-          </div>
-        </ScrollReveal>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-3">
-          {isLoading || !data
-            ? Array.from({ length: 10 }).map((_, i) => <SkeletonCollection key={i} />)
-            : items.map((item: any, i: number) => {
-                const { name, image } = parseNftMetadata(item?.metadata);
-                return (
-                  <ScrollReveal key={item.token_id} className={`stagger-${Math.min(i + 1, 8)}`}>
-                    <CardCollection title={name} ipfs={image ?? ""} />
-                  </ScrollReveal>
-                );
-              })}
-        </div>
-      </MaxWidthWrapper>
-    </section>
-  );
-}
-
-// ─── Curated Collections ──────────────────────────────────────────────────────
+// ─── Curated Collections (static — server rendered) ──────────────────────────
 function CuratedSection() {
   const [featured, ...rest] = CURATED_COLLECTIONS;
 
@@ -389,68 +206,11 @@ function CuratedSection() {
   );
 }
 
-// ─── Platform Stats ───────────────────────────────────────────────────────────
-function StatItem({ target, label, suffix = "+" }: { target: number; label: string; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (!e.isIntersecting) return;
-        obs.disconnect();
-        const startTime = performance.now();
-        const dur = 1600;
-        const tick = (now: number) => {
-          const t = Math.min((now - startTime) / dur, 1);
-          const eased = 1 - Math.pow(1 - t, 4);
-          setCount(Math.floor(eased * target));
-          if (t < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      },
-      { threshold: 0.5 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [target]);
-
-  return (
-    <div ref={ref} className="text-center py-8 sm:py-10 px-4">
-      <div
-        className="text-white font-bold tabular-nums"
-        style={{ fontSize: "clamp(1.875rem, 4vw, 2.75rem)" }}
-      >
-        {count.toLocaleString()}
-        {suffix}
-      </div>
-      <div className="text-muted-foreground text-sm mt-1.5">{label}</div>
-    </div>
-  );
-}
-
-function StatsSection() {
-  return (
-    <section className="border-b border-divider">
-      <div className="max-w-screen-xl mx-auto">
-        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-divider">
-          <StatItem target={4200} label="RON Total Volume" />
-          <StatItem target={42100} label="NFTs Minted" />
-          <StatItem target={8247} label="Active Collectors" />
-          <StatItem target={15} label="Collections" />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─── Page (Server Component) ─────────────────────────────────────────────────
 export default function Home() {
   return (
     <main className="min-h-screen bg-background">
-      <ScrollToTop
+      <LazyScrollToTop
         smooth
         color="hsl(212, 72%, 51%)"
         style={{
@@ -564,7 +324,7 @@ export default function Home() {
             <ScrollReveal className="stagger-2">
               <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 h-full">
                 <h3 className="text-white font-semibold text-sm mb-4">Allocation Chart</h3>
-                <DonutChart />
+                <LazyDonutChart />
               </div>
             </ScrollReveal>
 
@@ -583,7 +343,7 @@ export default function Home() {
                     <span className="text-primary text-xs font-medium">Ends soon</span>
                   </div>
                   <h3 className="text-white font-semibold text-sm mb-5">Sale Countdown</h3>
-                  <Countdown />
+                  <LazyCountdown />
                   <p className="text-muted-foreground/60 text-xs mt-5 leading-relaxed">
                     Don&apos;t miss the early-adopter rate. Once the timer hits zero, public sale pricing ends.
                   </p>
@@ -600,7 +360,7 @@ export default function Home() {
       {/* Roadmap Section */}
       <section className="border-b border-divider">
         <MaxWidthWrapper className="py-12 sm:py-16 lg:py-20 max-w-2xl">
-          <Timeline />
+          <LazyTimeline />
         </MaxWidthWrapper>
       </section>
 
@@ -617,7 +377,6 @@ export default function Home() {
             {TEAM_MEMBERS.map((member, i) => (
               <ScrollReveal key={member.name} className={`stagger-${i + 1}`}>
                 <div className="group card-lift flex items-center gap-4 sm:gap-5 p-4 sm:p-5 bg-surface border border-divider rounded-2xl hover:border-border transition-colors">
-                  {/* Avatar with glow */}
                   <div className="relative flex-shrink-0">
                     <div
                       className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold text-xl"
@@ -631,7 +390,6 @@ export default function Home() {
                     />
                   </div>
 
-                  {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 mb-1">
                       <span className="text-white font-semibold text-sm sm:text-base">{member.name}</span>
@@ -645,7 +403,6 @@ export default function Home() {
                     <p className="text-muted-foreground text-xs leading-relaxed">{member.bio}</p>
                   </div>
 
-                  {/* Social */}
                   <div className="flex items-center gap-1.5 flex-shrink-0">
                     <button className="w-8 h-8 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-white hover:border-accent transition-colors">
                       <Twitter className="w-3.5 h-3.5" />
